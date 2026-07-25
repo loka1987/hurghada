@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hurghada</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hurghada</title>
 </head>
-<body>
-    <h1>Welcome to Hurghada</h1>
-    <p>The future digital platform for Hurghada.</p>
+<body style="font-family:Arial;text-align:center;margin-top:50px;">
+
+<h1>Welcome to Hurghada</h1>
+<p>The future digital platform for Hurghada.</p>
+
+<button id="loginBtn">Login with Pi</button>
+<br><br>
+<button id="payBtn">Pay with Pi</button>
+
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script>
+Pi.init({ version: "2.0", sandbox: false });
+
+document.getElementById("loginBtn").onclick = async () => {
+  try {
+    const scopes = ["payments"];
+    const auth = await Pi.authenticate(scopes, function(){});
+    alert("Welcome " + auth.user.username);
+  } catch (e) {
+    alert("Login failed");
+  }
+};
+
+document.getElementById("payBtn").onclick = () => {
+  alert("Payment integration will be added in the next step.");
+};
+</script>
+
 </body>
 </html>
