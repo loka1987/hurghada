@@ -37,13 +37,37 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   }
 });
 
-document.getElementById("payBtn").addEventListener("click", () => {
+document.getElementById("payBtn").addEventListener("click", async () => {
   if (!currentUser) {
     alert("Please login first.");
     return;
   }
 
-  alert("Login successful!\nNext we will connect the real Pi payment.");
+  try {
+    await Pi.createPayment(
+      {
+        amount: 0.01,
+        memo: "Test Payment",
+        metadata: { test: true }
+      },
+      {
+        onReadyForServerApproval: function(paymentId) {
+          console.log(paymentId);
+        },
+        onReadyForServerCompletion: function(paymentId, txid) {
+          console.log(paymentId, txid);
+        },
+        onCancel: function(paymentId) {
+          console.log("Cancelled", paymentId);
+        },
+        onError: function(error) {
+          console.error(error);
+        }
+      }
+    );
+  } catch (e) {
+    console.error(e);
+  }
 });
 </script>
 
